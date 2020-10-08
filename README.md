@@ -1,3 +1,35 @@
+
+# Requisitos
+### Requisitos obligatorios
+
+- Se podrá introducir una ciudad. Ejemplos: "A Coruña", "Madrid", "Lugo", ... o un código postal: 15001, 27000, …
+- Una vez introducida una ciudad pulsado el botón de "buscar", se debe mantener esa ciudad aunque se refresque la página
+- Se debe mostrar la siguiente información:
+  - Nombre de la ciudad (no el introducido si no el que devuelve el api).
+  - Icono indicando el tiempo en esa ciudad
+  - Descripción del tiempo actual con la primera letra en mayúsculas.
+  - Temperatura actual y sensación térmica
+  -  Velocidad del viento
+- El nombre de la ciudad debe estar en la fuente [Lobster](https://fonts.google.com/specimen/Lobster)
+- Resto de fuentes en [Roboto](https://fonts.google.com/specimen/Roboto)
+ 
+
+### Requisitos opcionales
+
+- Que la imagen de fondo corresponda con respecto al tiempo obtenido. Si hace sol, mostrar una imagen soleada, si llueve que la imagen de fondo sea de un día lluvioso.
+- Que se puedan mostrar varias ciudades a la vez (que en vez de tener una única localización guardada tengamos un array de localizaciones y al buscar se añade al array).
+  - En este caso se debería permitir eliminar una localización
+
+ 
+
+### APIs disponibles
+
+- Fetch api: https://developer.mozilla.org/es/docs/Web/API/Fetch_API
+- Obtención de información meteorológica: https://openweathermap.org/current
+- Iconos del tiempo: https://openweathermap.org/weather-conditions
+- Persistir información: https://developer.mozilla.org/es/docs/Web/API/Window/localStorage
+
+# React
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
