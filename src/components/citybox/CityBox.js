@@ -4,7 +4,6 @@ function CityBox () {
   const [city, setCity] = useState("")
 
   const getCity = () => {
-    setCity("")
   }
 };
 

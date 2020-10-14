@@ -1,11 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import CityBox from './components/CityBox';
-import { Container } from 'react-bootstrap';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import CityBox from "./components/citybox/";
+import Search from "./components/search";
+import { Container, Row, Col } from "react-bootstrap";
 
 function App() {
-  return (<Container><CityBox>Hola</CityBox></Container>
+  return (
+    <div className='mt-3'> 
+      <Row>
+        <Col></Col>
+        <Col xs={2}>
+          <Search></Search>
+        </Col>
+      </Row>
+      <Row></Row>
+    </div>
   );
 }
 
