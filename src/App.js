@@ -25,7 +25,7 @@ class App extends React.Component {
     var userLang = (navigator.language || navigator.userLanguage).slice(0, 2);
     var petition = "http://api.openweathermap.org/data/2.5/weather?";
     if (isNumeric(city)) {
-      petition += "zip=" + city;
+      petition += "zip=" + city +",es";
     } else {
       petition += "q=" + city;
     }
