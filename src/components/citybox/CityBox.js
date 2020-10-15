@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
+import "./CityBox.css";
 
-function CityBox () {
-  const [city, setCity] = useState("")
-
-  const getCity = () => {
+class CityBox extends React.Component {
+  render() {
+    return (
+      <div class="row">
+        <div class="col-centered">{this.props.weatherCityName}</div>
+      </div>
+    );
   }
-};
+}
 
 export default CityBox;
