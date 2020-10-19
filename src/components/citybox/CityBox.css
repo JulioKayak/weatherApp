@@ -1,4 +1,26 @@
-.col-centered{
-    float: none;
-    margin: 0 auto;
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.weatherIcon {
+  height: 75px;
+  width: 75px;
+  margin-left: -5%;
+  margin-right: -5%;
 }
+
+.cityBox {
+  text-align: center;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
+
+.cHeader {
+  padding: "10px";
+  font-family: 'Lobster',cursive;
+  font-size: xx-large;
+}
+
+.cabecera {
+    font-weight: bold;
+}
+

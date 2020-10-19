@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import Col from "react-bootstrap/Col";
-import { Button, Row } from "react-bootstrap";
+import React from "react";
+import { Button } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import "./SearchBar.css";
 
@@ -24,21 +23,15 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <Row>
-          <Col>
             <input
               type="text"
               value={this.state.value}
               onChange={this.handleChange}
               placeholder="Ciudad"
             />
-          </Col>
-          <Col>
             <Button type="submit" value="Submit">
               <Search />
             </Button>
-          </Col>
-        </Row>
       </form>
     );
   }
