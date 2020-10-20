@@ -2,40 +2,55 @@ import React from "react";
 import { Col, Card, Row } from "react-bootstrap";
 import { FormattedMessage } from "react-intl";
 import "./CityBox.css";
-import IconLoader from "./components/IconLoader";
 
 class CityBox extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      weatherId : this.props.weatherId,
-    }
+      weatherIconId: this.props.weatherIconId,
+    };
   }
+  iconLoad = () => {
+    var imgHead = "http://openweathermap.org/img/wn/";
+    var imgBody = this.props.weatherIconId;
+    var imgTail = "@2x.png";
+
+    var img = imgHead + imgBody + imgTail;
+    return img;
+  };
+
   render() {
     return (
-      <Card 
+      <Card
         md="auto"
         className="cityBox"
         style={{ backgroundColor: "#AB918C" }}
       >
         <Card.Header className="cHeader">
           {this.props.weatherCityName}
-          <IconLoader {...this.state}></IconLoader>
-
+          <img
+            className="weatherIcon"
+            alt="Weather icon matching current weather"
+            src={this.iconLoad()}
+          />
         </Card.Header>
-        <Card.Body>
+        <Card.Body className="cBody">
           <Row>
             <Col>
               <Row className="cabecera justify-content-md-center">
                 <FormattedMessage id="citybox.description"></FormattedMessage>
               </Row>
-              <Row className="justify-content-md-center datos">{this.props.weatherDescription}</Row>
+              <Row className="justify-content-md-center datos">
+                {this.props.weatherDescription}
+              </Row>
             </Col>
             <Col md="auto">
               <Row className="cabecera justify-content-md-center">
                 <FormattedMessage id="citybox.windspeed"></FormattedMessage>
               </Row>
-              <Row className="justify-content-md-center datos"> {this.props.weatherWindSpeed} m/s</Row>
+              <Row className="justify-content-md-center datos">
+                {this.props.weatherWindSpeed} m/s
+              </Row>
             </Col>
           </Row>
           <Row>
@@ -43,13 +58,17 @@ class CityBox extends React.Component {
               <Row className="cabecera justify-content-md-center">
                 <FormattedMessage id="citybox.temperature"></FormattedMessage>
               </Row>
-              <Row  className="justify-content-md-center datos">{this.props.weatherTemp} ºC</Row>
+              <Row className="justify-content-md-center datos">
+                {this.props.weatherTemp} ºC
+              </Row>
             </Col>
             <Col md="auto">
               <Row className="cabecera justify-content-md-center">
                 <FormattedMessage id="citybox.weatherfeelslike"></FormattedMessage>
               </Row>
-              <Row className="justify-content-md-center ">{this.props.weatherFeelsLike} ºC</Row>
+              <Row className="justify-content-md-center ">
+                {this.props.weatherFeelsLike} ºC
+              </Row>
             </Col>
           </Row>
         </Card.Body>

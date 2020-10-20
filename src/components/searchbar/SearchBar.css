@@ -1,5 +1,6 @@
 input[type=text], select, textarea {
-  width: 83%;
+  width: 84%;
+  height: 40px;
   padding: 12px;
   border: 1px solid black;
   border-radius: 3px;
@@ -8,7 +9,9 @@ input[type=text], select, textarea {
 
 button[type=submit] {
   color: white;
-  padding: 12px;
+  margin-left: 1%;
+  height: 40px;
+  padding: 0px;
   width: 15%;
   border: 1px solid black;
   border-radius: 3px;
