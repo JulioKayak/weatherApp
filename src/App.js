@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import CityBox from "./components/citybox/";
+import CityBox from "./components/citybox";
 import Search from "./components/searchbar";
 import { Row } from "react-bootstrap";
 import { isNumeric } from "jquery";

@@ -22,4 +22,9 @@
 
 .cabecera {
     font-weight: bold;
+    min-width: 150px;
+}
+
+.datos {
+  min-width: 150px;
 }
