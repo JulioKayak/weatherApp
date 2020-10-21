@@ -12,6 +12,8 @@ class SearchBar extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
@@ -30,12 +32,13 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-            <input
+        <FormattedMessage id="searchbar.formplaceholder">
+            {placeholder=><input
               type="text"
               value={this.state.value}
               onChange={this.handleChange}
-              placeholder={<FormattedMessage id="searchbar.formplaceholder"></FormattedMessage>}
-            />
+              placeholder={placeholder}
+            />}</FormattedMessage>
             <Button type="submit" value="Submit">
               <Search />
             </Button>
