@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
+import { FormattedMessage } from "react-intl";
 import "./SearchBar.css";
 
 class SearchBar extends React.Component {
@@ -17,9 +18,15 @@ class SearchBar extends React.Component {
   handleSubmit(event){
     event.preventDefault();
     //alert("Child this.state.value: "+this.state.value);
+    if (this.state.value == ""){
+      this.props.resetState();
+    } else {
     this.props.fetchData(this.state.value);
+    this.setState({
+      value: "",
+    })
+    }
   }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -27,7 +34,7 @@ class SearchBar extends React.Component {
               type="text"
               value={this.state.value}
               onChange={this.handleChange}
-              placeholder="Ciudad"
+              placeholder={<FormattedMessage id="searchbar.formplaceholder"></FormattedMessage>}
             />
             <Button type="submit" value="Submit">
               <Search />

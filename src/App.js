@@ -51,8 +51,10 @@ class App extends React.Component {
       background: bg,
     };
 
+    this.defaultState = { ...this.state };
     this.fetchData = this.fetchData.bind(this);
-    this.setBackground = this.setBackground.bind(this);
+    this.setBackground = this.setBackground.bind(this); //needed?
+    this.resetState = this.resetState.bind(this);
   }
   setBackground = () => {
     var icon = this.state.weatherIconId.slice(0, -1);
@@ -143,7 +145,7 @@ class App extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         // eslint-disable-next-line
-        if (data.cod != 404 && data.cod != 400) {
+        if (data.cod === 200) {
           this.setState({
             weatherCityName: data.name,
             weatherId: data.weather[0].id,
@@ -170,13 +172,25 @@ class App extends React.Component {
             background: bg,
           });
         }
+
+        if (this.state.weatherCityName != "") {
+        window.localStorage.setItem("cityName", data.name);
+        } else {
+          window.localStorage.removeItem("cityName");
+        }
         this.setBackground();
       });
+  };
+
+  resetState = () => {
+    this.setState({ ...this.defaultState });
+    window.localStorage.removeItem("cityName");
   };
 
   render() {
     return (
       <div
+        style={{ paddingLeft: "15px" }}
         className="mt-3"
         script={
           (document.body.style.backgroundImage =
@@ -185,13 +199,25 @@ class App extends React.Component {
       >
         <Row
           className="justify-content-md-center"
-          style={{ marginBottom: "50px", height: "40px" }}
+          style={{
+            marginBottom: "50px",
+            height: "40px",
+            marginLeft: "0px",
+            marginRight: "0px",
+          }}
         >
-          <Search fetchData={this.fetchData}></Search>
+          <Search fetchData={this.fetchData} resetState={this.resetState}></Search>
         </Row>
-        <Row className="justify-content-md-center">
+        <Row
+          className="justify-content-md-center"
+          style={{ marginLeft: "0px", marginRight: "0px" }}
+        >
           {this.state.weatherCityName ? (
-            <CityBox {...this.state}></CityBox>
+            <CityBox {...this.state} resetState={this.resetState}></CityBox>
+          ) : window.localStorage.getItem("cityName") != null &&
+            window.localStorage.getItem("cityName") !== "" ? (
+            (this.fetchData(window.localStorage.getItem("cityName")),
+            (<CityBox {...this.state} resetState={this.resetState}></CityBox>))
           ) : null}
         </Row>
       </div>

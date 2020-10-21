@@ -9,6 +9,7 @@ class CityBox extends React.Component {
     this.state = {
       weatherIconId: this.props.weatherIconId,
     };
+    this.buttonClick = this.buttonClick.bind(this);
   }
   iconLoad = () => {
     var imgHead = "http://openweathermap.org/img/wn/";
@@ -18,6 +19,11 @@ class CityBox extends React.Component {
     var img = imgHead + imgBody + imgTail;
     return img;
   };
+
+  buttonClick(event) {
+    event.preventDefault();
+    this.props.resetState();
+  }
 
   render() {
     return (
@@ -33,6 +39,9 @@ class CityBox extends React.Component {
             alt="Weather icon matching current weather"
             src={this.iconLoad()}
           />
+          <button type="button" className="close" aria-label="Close" onClick={this.buttonClick}>
+            <span aria-hidden="true">&times;</span>
+          </button>
         </Card.Header>
         <Card.Body className="cBody">
           <Row>

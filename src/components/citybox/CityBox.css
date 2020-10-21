@@ -28,10 +28,13 @@
     min-width: 150px;
 }
 
-.datos {
-  min-width: 150px;
-}
-
 .cBody{
   padding-right: 30px !important; 
+}
+
+.close {
+  margin-right: -20px;
+  margin-left: -20px;
+  margin-top: 0px;
+  width: 24px;
 }

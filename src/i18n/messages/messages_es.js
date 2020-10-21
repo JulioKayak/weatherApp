@@ -3,5 +3,6 @@ export default {
     'citybox.description': 'Descripción',
     'citybox.windspeed': 'Velocidad del viento',
     'citybox.temperature': 'Temperatura',
-    'citybox.weatherfeelslike': 'Sensación térmica'
+    'citybox.weatherfeelslike': 'Sensación térmica',
+    'searchbar.formplaceholder': 'Ciudad'
 }
