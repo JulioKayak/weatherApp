@@ -56,11 +56,9 @@ class App extends React.Component {
     this.setBackground = this.setBackground.bind(this); //needed?
     this.resetState = this.resetState.bind(this);
   }
-  setBackground = () => {
-    var icon = this.state.weatherIconId.slice(0, -1);
-    var dayIcon = this.state.weatherIconId.substr(
-      this.state.weatherIconId.length - 1
-    );
+  setBackground = (iconRaw) => {
+    var icon = iconRaw.slice(0, -1);
+    var dayIcon = iconRaw.substr(iconRaw.length - 1);
     var day = true;
     dayIcon === "d" ? (day = true) : (day = false);
     var backgroundPath = "";
@@ -124,9 +122,7 @@ class App extends React.Component {
         backgroundPath = bg;
         break;
     }
-    this.setState({
-      background: backgroundPath,
-    });
+    return backgroundPath;
   };
 
   fetchData = (city) => {
@@ -159,6 +155,7 @@ class App extends React.Component {
             weatherFeelsLike: data.main.feels_like,
             weatherWindSpeed: data.wind.speed,
             weatherIconId: data.weather[0].icon,
+            background: this.setBackground(data.weather[0].icon),
           });
         } else {
           this.setState({
@@ -173,12 +170,12 @@ class App extends React.Component {
           });
         }
 
+        // eslint-disable-next-line
         if (this.state.weatherCityName != "") {
-        window.localStorage.setItem("cityName", data.name);
+          window.localStorage.setItem("cityName", data.name);
         } else {
           window.localStorage.removeItem("cityName");
         }
-        this.setBackground();
       });
   };
 
@@ -206,7 +203,9 @@ class App extends React.Component {
             marginRight: "0px",
           }}
         >
-          <Search fetchData={this.fetchData} resetState={this.resetState}></Search>
+          <Search
+            fetchData={this.fetchData}
+          ></Search>
         </Row>
         <Row
           className="justify-content-md-center"
