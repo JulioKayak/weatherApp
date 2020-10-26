@@ -22,7 +22,7 @@ class CityBox extends React.Component {
 
   buttonClick(event) {
     event.preventDefault();
-    this.props.resetState();
+    this.props.resetState(this.props.weatherCityName);
   }
 
   render() {

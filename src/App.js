@@ -41,14 +41,18 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weatherCityName: "",
-      weatherId: "",
-      weatherDescription: "",
-      weatherTemp: "",
-      weatherFeelsLike: "",
-      weatherWindSpeed: "",
-      weatherIconId: "",
-      background: bg,
+      cities: [
+        {
+          weatherCityName: "",
+          weatherId: "",
+          weatherDescription: "",
+          weatherTemp: "",
+          weatherFeelsLike: "",
+          weatherWindSpeed: "",
+          weatherIconId: "",
+          background: bg,
+        },
+      ],
     };
 
     this.defaultState = { ...this.state };
@@ -143,7 +147,7 @@ class App extends React.Component {
       .then((data) => {
         // eslint-disable-next-line
         if (data.cod === 200) {
-          this.setState({
+          const newCity = {
             weatherCityName: data.name,
             weatherId: data.weather[0].id,
             weatherDescription:
@@ -157,54 +161,62 @@ class App extends React.Component {
             weatherWindSpeed: data.wind.speed,
             weatherIconId: data.weather[0].icon,
             background: this.setBackground(data.weather[0].icon),
-          });
-        } else {
-          this.setState({
-            weatherCityName: "",
-            weatherId: "",
-            weatherDescription: "",
-            weatherTemp: "",
-            weatherFeelsLike: "",
-            weatherWindSpeed: "",
-            weatherIconId: "",
-            background: bg,
-          });
-        }
-
+          };
+          this.setState((state) => ({
+            cities: [...state.cities, newCity],
+          }));
+        } 
+        const citieslong = this.state.cities.length;
+        const previousls = JSON.parse(window.localStorage.getItem("cities"));
+        const newls = previousls.push(data.name);
         // eslint-disable-next-line
-        if (this.state.weatherCityName != "") {
-          window.localStorage.setItem("cityName", data.name);
-        } else {
-          window.localStorage.removeItem("cityName");
-        }
+        if (this.state.cities[citieslong].weatherCityName != "") {
+          
+          window.localStorage.setItem("cities", JSON.stringify(newls));
+         } //else {
+        //   window.localStorage.removeItem("ci");
+        // }
       });
   };
-
-  resetState = () => {
-    this.setState({ ...this.defaultState });
-    window.localStorage.removeItem("cityName");
-  };
-  printCity = () => {
-    const cityName = window.localStorage.getItem("cityName");
-    if (this.state.weatherCityName) {
-      return <CityBox {...this.state} resetState={this.resetState}></CityBox>;
-    } else {
-      if (cityName != null && cityName !== "") {
-        this.fetchData(cityName);
-        return <CityBox {...this.state} resetState={this.resetState}></CityBox>;
-      } else {
-        return null;
+  resetState = (cityName) => {
+    const { cities: oldCities } = this.state;
+    const cities = oldCities.map((c) => {
+      if (c.weatherCityName === cityName) {
+        this.setState({});
       }
+    });
+    if (this.state.cities.length == 0) {
+      window.localStorage.removeItem("cityName");
     }
   };
+
+  printCity = () => {
+    const cityName = window.localStorage.getItem("cityName");
+    var { cities: oldCities } = this.state;
+    const cities = oldCities.map((c) => {
+      if (this.state.weatherCityName) {
+        return <CityBox {...this.state} resetState={this.resetState}></CityBox>
+      } else {
+        if (cityName != null &&
+          cityName !== "") {
+          (this.fetchData(cityName));
+          return <CityBox {...this.state} resetState={this.resetState}></CityBox>
+        } else {
+          return null
+        }
+      }
+    });
+  };
+
   render() {
+    const citieslong = this.state.cities.length;
     return (
       <div
         style={{ paddingLeft: "15px" }}
         className="mt-3"
         script={
           (document.body.style.backgroundImage =
-            "url(" + this.state.background + ")")
+            "url(" + this.state.cities[citieslong-1].background + ")")
         }
       >
         <Row
