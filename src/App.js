@@ -55,6 +55,7 @@ class App extends React.Component {
     this.fetchData = this.fetchData.bind(this);
     this.setBackground = this.setBackground.bind(this); //needed?
     this.resetState = this.resetState.bind(this);
+    this.printCity = this.printCity.bind(this);
   }
   setBackground = (iconRaw) => {
     var icon = iconRaw.slice(0, -1);
@@ -183,7 +184,19 @@ class App extends React.Component {
     this.setState({ ...this.defaultState });
     window.localStorage.removeItem("cityName");
   };
-
+  printCity = () => {
+    const cityName = window.localStorage.getItem("cityName");
+    if (this.state.weatherCityName) {
+      return <CityBox {...this.state} resetState={this.resetState}></CityBox>;
+    } else {
+      if (cityName != null && cityName !== "") {
+        this.fetchData(cityName);
+        return <CityBox {...this.state} resetState={this.resetState}></CityBox>;
+      } else {
+        return null;
+      }
+    }
+  };
   render() {
     return (
       <div
@@ -203,21 +216,13 @@ class App extends React.Component {
             marginRight: "0px",
           }}
         >
-          <Search
-            fetchData={this.fetchData}
-          ></Search>
+          <Search fetchData={this.fetchData}></Search>
         </Row>
         <Row
           className="justify-content-md-center"
           style={{ marginLeft: "0px", marginRight: "0px" }}
         >
-          {this.state.weatherCityName ? (
-            <CityBox {...this.state} resetState={this.resetState}></CityBox>
-          ) : window.localStorage.getItem("cityName") != null &&
-            window.localStorage.getItem("cityName") !== "" ? (
-            (this.fetchData(window.localStorage.getItem("cityName")),
-            (<CityBox {...this.state} resetState={this.resetState}></CityBox>))
-          ) : null}
+          {this.printCity()}
         </Row>
       </div>
     );
