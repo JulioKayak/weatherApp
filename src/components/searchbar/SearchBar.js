@@ -20,6 +20,7 @@ class SearchBar extends React.Component {
   handleSubmit(event){
     event.preventDefault();
     //alert("Child this.state.value: "+this.state.value);
+        // eslint-disable-next-line
     if (this.state.value == ""){
       this.props.resetState();
     } else {
