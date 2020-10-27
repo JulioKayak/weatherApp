@@ -55,7 +55,7 @@ class App extends React.Component {
       ],
     };
     this.fetchData = this.fetchData.bind(this);
-    this.setBackground = this.setBackground.bind(this); //needed?
+    this.setBackground = this.setBackground.bind(this);
     this.resetState = this.resetState.bind(this);
   }
   setBackground = (iconRaw) => {
@@ -193,28 +193,37 @@ class App extends React.Component {
       });
   };
   resetState = (cityName) => {
-    // const { cities: oldCities } = this.state;
-    // const cities = oldCities.map((c) => {
-    //   if (c.weatherCityName === cityName) {
-    //   }
-    // });
     const newCities = this.state.cities.filter(
       (cities) => cities.weatherCityName !== cityName
     );
+    //eslint-disable-next-line
+    if (newCities.length == 0) {
+      const defaultCity = {
+        weatherCityName: "",
+        weatherId: "",
+        weatherDescription: "",
+        weatherTemp: "",
+        weatherFeelsLike: "",
+        weatherWindSpeed: "",
+        weatherIconId: "",
+        background: bg,
+      };
+      this.setState((state) => ({
+        cities: [defaultCity],
+      }));
+    } else {
     this.setState((state) => ({
       cities: newCities,
-    }));
+    }));}
     const newCitiesNames = JSON.parse(
       window.localStorage.getItem("cities")
     ).filter((cityNamels) => cityNamels !== cityName);
     window.localStorage.setItem("cities", JSON.stringify(newCitiesNames));
-    // if (this.state.cities.length == 0) {
-    //   window.localStorage.removeItem("cityName");
-    // }
   };
 
   render() {
     const citieslong = this.state.cities.length;
+    const citiesls = JSON.parse(window.localStorage.getItem("cities"));
     return (
       <div
         style={{ paddingLeft: "15px" }}
@@ -242,6 +251,15 @@ class App extends React.Component {
           {this.state.cities.map((c) =>
             c.weatherCityName !== "" ? (
               <CityBox {...c} resetState={this.resetState}></CityBox>
+            ) : citiesls != null && citiesls !== [] ? (
+              citiesls.map(
+                (cls) => this.fetchData(cls),
+                this.state.cities.map((c) =>
+                  c.weatherCityName !== "" ? (
+                    <CityBox {...c} resetState={this.resetState}></CityBox>
+                  ) : null
+                )
+              )
             ) : null
           )}
         </Row>
