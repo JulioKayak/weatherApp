@@ -22,13 +22,14 @@ class SearchBar extends React.Component {
     //alert("Child this.state.value: "+this.state.value);
         // eslint-disable-next-line
     if (this.state.value == ""){
-      this.props.resetState();
+      // this.props.resetState();
+      return null
     } else {
     this.props.fetchData(this.state.value);
     this.setState({
       value: "",
     })
-    }
+    };
   }
   render() {
     return (

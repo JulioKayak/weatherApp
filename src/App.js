@@ -55,11 +55,9 @@ class App extends React.Component {
       ],
     };
 
-    this.defaultState = { ...this.state };
     this.fetchData = this.fetchData.bind(this);
     this.setBackground = this.setBackground.bind(this); //needed?
     this.resetState = this.resetState.bind(this);
-    this.printCity = this.printCity.bind(this);
   }
   setBackground = (iconRaw) => {
     var icon = iconRaw.slice(0, -1);
@@ -147,65 +145,64 @@ class App extends React.Component {
       .then((data) => {
         // eslint-disable-next-line
         if (data.cod === 200) {
-          const newCity = {
-            weatherCityName: data.name,
-            weatherId: data.weather[0].id,
-            weatherDescription:
-              data.weather[0].description.slice(0, 1).toUpperCase() +
-              data.weather[0].description.slice(
-                1,
-                data.weather[0].description.length
-              ),
-            weatherTemp: data.main.temp,
-            weatherFeelsLike: data.main.feels_like,
-            weatherWindSpeed: data.wind.speed,
-            weatherIconId: data.weather[0].icon,
-            background: this.setBackground(data.weather[0].icon),
-          };
-          this.setState((state) => ({
-            cities: [...state.cities, newCity],
-          }));
-        } 
-        const citieslong = this.state.cities.length;
-        const previousls = JSON.parse(window.localStorage.getItem("cities"));
-        const newls = previousls.push(data.name);
-        // eslint-disable-next-line
-        if (this.state.cities[citieslong].weatherCityName != "") {
-          
-          window.localStorage.setItem("cities", JSON.stringify(newls));
-         } //else {
+          if (
+            this.state.cities.find((ciudad) => {
+              return ciudad.weatherCityName === data.name;
+            }) == null
+          ) {
+            const newCity = {
+              weatherCityName: data.name,
+              weatherId: data.weather[0].id,
+              weatherDescription:
+                data.weather[0].description.slice(0, 1).toUpperCase() +
+                data.weather[0].description.slice(
+                  1,
+                  data.weather[0].description.length
+                ),
+              weatherTemp: data.main.temp,
+              weatherFeelsLike: data.main.feels_like,
+              weatherWindSpeed: data.wind.speed,
+              weatherIconId: data.weather[0].icon,
+              background: this.setBackground(data.weather[0].icon),
+            };
+            if (this.state.cities[0].weatherCityName === "") {
+              this.setState((state) => ({
+                cities: [newCity],
+              }));
+            } else {
+              this.setState((state) => ({
+                cities: [...state.cities, newCity],
+              }));
+            }
+          }
+        }
+        // const citieslong = this.state.cities.length;
+        // const previousls = JSON.parse(window.localStorage.getItem("cities"));
+        // const newls = previousls.push(data.name);
+        // //eslint-disable-next-line
+        // if (this.state.cities[citieslong].weatherCityName != "") {
+
+        //   window.localStorage.setItem("cities", JSON.stringify(newls));
+        //  } else {
         //   window.localStorage.removeItem("ci");
         // }
       });
   };
   resetState = (cityName) => {
-    const { cities: oldCities } = this.state;
-    const cities = oldCities.map((c) => {
-      if (c.weatherCityName === cityName) {
-        this.setState({});
-      }
-    });
-    if (this.state.cities.length == 0) {
-      window.localStorage.removeItem("cityName");
-    }
-  };
-
-  printCity = () => {
-    const cityName = window.localStorage.getItem("cityName");
-    var { cities: oldCities } = this.state;
-    const cities = oldCities.map((c) => {
-      if (this.state.weatherCityName) {
-        return <CityBox {...this.state} resetState={this.resetState}></CityBox>
-      } else {
-        if (cityName != null &&
-          cityName !== "") {
-          (this.fetchData(cityName));
-          return <CityBox {...this.state} resetState={this.resetState}></CityBox>
-        } else {
-          return null
-        }
-      }
-    });
+    // const { cities: oldCities } = this.state;
+    // const cities = oldCities.map((c) => {
+    //   if (c.weatherCityName === cityName) {
+    //   }
+    // });
+    const newCities = this.state.cities.filter(
+      (cities) => cities.weatherCityName !== cityName
+    );
+    this.setState((state) => ({
+      cities: newCities,
+    }));
+    // if (this.state.cities.length == 0) {
+    //   window.localStorage.removeItem("cityName");
+    // }
   };
 
   render() {
@@ -216,7 +213,7 @@ class App extends React.Component {
         className="mt-3"
         script={
           (document.body.style.backgroundImage =
-            "url(" + this.state.cities[citieslong-1].background + ")")
+            "url(" + this.state.cities[citieslong - 1].background + ")")
         }
       >
         <Row
@@ -234,7 +231,11 @@ class App extends React.Component {
           className="justify-content-md-center"
           style={{ marginLeft: "0px", marginRight: "0px" }}
         >
-          {this.printCity()}
+          {this.state.cities.map((c) =>
+            c.weatherCityName !== "" ? (
+              <CityBox {...c} resetState={this.resetState}></CityBox>
+            ) : null
+          )}
         </Row>
       </div>
     );

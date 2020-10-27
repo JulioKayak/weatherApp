@@ -6,9 +6,6 @@ import "./CityBox.css";
 class CityBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      weatherIconId: this.props.weatherIconId,
-    };
     this.buttonClick = this.buttonClick.bind(this);
   }
   iconLoad = () => {
