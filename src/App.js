@@ -54,7 +54,6 @@ class App extends React.Component {
         },
       ],
     };
-
     this.fetchData = this.fetchData.bind(this);
     this.setBackground = this.setBackground.bind(this); //needed?
     this.resetState = this.resetState.bind(this);
@@ -174,18 +173,23 @@ class App extends React.Component {
                 cities: [...state.cities, newCity],
               }));
             }
+
+            const citieslong = this.state.cities.length;
+            //eslint-disable-next-line
+            if (citieslong == 1) {
+              window.localStorage.setItem(
+                "cities",
+                JSON.stringify([data.name])
+              );
+            } else {
+              const previousls = JSON.parse(
+                window.localStorage.getItem("cities")
+              );
+              previousls.push(data.name);
+              window.localStorage.setItem("cities", JSON.stringify(previousls));
+            }
           }
         }
-        // const citieslong = this.state.cities.length;
-        // const previousls = JSON.parse(window.localStorage.getItem("cities"));
-        // const newls = previousls.push(data.name);
-        // //eslint-disable-next-line
-        // if (this.state.cities[citieslong].weatherCityName != "") {
-
-        //   window.localStorage.setItem("cities", JSON.stringify(newls));
-        //  } else {
-        //   window.localStorage.removeItem("ci");
-        // }
       });
   };
   resetState = (cityName) => {
@@ -200,6 +204,10 @@ class App extends React.Component {
     this.setState((state) => ({
       cities: newCities,
     }));
+    const newCitiesNames = JSON.parse(
+      window.localStorage.getItem("cities")
+    ).filter((cityNamels) => cityNamels !== cityName);
+    window.localStorage.setItem("cities", JSON.stringify(newCitiesNames));
     // if (this.state.cities.length == 0) {
     //   window.localStorage.removeItem("cityName");
     // }
