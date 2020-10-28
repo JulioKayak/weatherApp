@@ -13,39 +13,41 @@ class SearchBar extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
-  handleSubmit(event){
+  handleSubmit(event) {
     event.preventDefault();
-        // eslint-disable-next-line
-    if (this.state.value == ""){
-      return null
+    // eslint-disable-next-line
+    if (this.state.value == "") {
+      return null;
     } else {
-    this.props.fetchData(this.state.value);
-    this.setState({
-      value: "",
-    })
-    };
+      let citiesArray = this.state.value.split(" ");
+      this.props.newSearchAndDataFetch(citiesArray);
+      this.setState({
+        value: "",
+      });
+    }
   }
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <FormattedMessage id="searchbar.formplaceholder">
-            {placeholder=><input
+          {(placeholder) => (
+            <input
               type="text"
               value={this.state.value}
               onChange={this.handleChange}
               placeholder={placeholder}
-            />}</FormattedMessage>
-            <Button type="submit" value="Submit">
-              <Search />
-            </Button>
+            />
+          )}
+        </FormattedMessage>
+        <Button type="submit" value="Submit">
+          <Search />
+        </Button>
       </form>
     );
   }
 }
 
 export default SearchBar;
-

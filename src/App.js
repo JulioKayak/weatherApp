@@ -54,9 +54,12 @@ class App extends React.Component {
         },
       ],
     };
+
     this.fetchData = this.fetchData.bind(this);
     this.setBackground = this.setBackground.bind(this);
     this.resetState = this.resetState.bind(this);
+    this.newSearchAndDataFetch = this.newSearchAndDataFetch.bind(this);
+    this.resetFullState = this.resetFullState.bind(this);
   }
   setBackground = (iconRaw) => {
     var icon = iconRaw.slice(0, -1);
@@ -163,11 +166,12 @@ class App extends React.Component {
             this.setState((state) => ({
               cities: [newCity],
             }));
+            window.localStorage.setItem("cities", JSON.stringify([data.name]));
           } else {
             if (
               this.state.cities.find((ciudad) => {
-                return ciudad.weatherCityName === data.name;
-              }) != null
+                return ciudad.weatherCityName == data.name;
+              }) != null //Si la ciudad existe en el array de estados
             ) {
               const newCities = this.state.cities.filter(
                 (ciudad) => ciudad.weatherCityName !== data.name
@@ -189,7 +193,7 @@ class App extends React.Component {
 
             const citieslong = this.state.cities.length;
             //eslint-disable-next-line
-            if (citieslong == 1) {
+            if (citieslong == 1 && citieslong == 0) {
               window.localStorage.setItem(
                 "cities",
                 JSON.stringify([data.name])
@@ -198,8 +202,7 @@ class App extends React.Component {
               const previousls = JSON.parse(
                 window.localStorage.getItem("cities")
               );
-              const newls = previousls.filter(
-                (ciudad) => ciudad !== data.name)
+              const newls = previousls.filter((ciudad) => ciudad !== data.name);
               newls.push(data.name);
               window.localStorage.setItem("cities", JSON.stringify(newls));
             }
@@ -237,6 +240,29 @@ class App extends React.Component {
     window.localStorage.setItem("cities", JSON.stringify(newCitiesNames));
   };
 
+  resetFullState = () => {
+    const defaultCity = {
+      weatherCityName: "",
+      weatherId: "",
+      weatherDescription: "",
+      weatherTemp: "",
+      weatherFeelsLike: "",
+      weatherWindSpeed: "",
+      weatherIconId: "",
+      background: bg,
+    };
+    window.localStorage.setItem("cities", JSON.stringify([]));
+    this.setState((state) => ({
+      cities: [defaultCity],
+    }));
+
+  }
+
+  newSearchAndDataFetch = (citiesArray) => {
+    this.resetFullState();
+    citiesArray.map((city) => this.fetchData(city));
+  };
+
   render() {
     const citieslong = this.state.cities.length;
     const citiesls = JSON.parse(window.localStorage.getItem("cities"));
@@ -258,7 +284,7 @@ class App extends React.Component {
             marginRight: "0px",
           }}
         >
-          <Search fetchData={this.fetchData}></Search>
+          <Search newSearchAndDataFetch={this.newSearchAndDataFetch}></Search>
         </Row>
         <Row
           className="justify-content-md-center"
