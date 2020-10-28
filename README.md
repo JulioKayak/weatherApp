@@ -12,6 +12,7 @@
   -  Velocidad del viento
 - El nombre de la ciudad debe estar en la fuente [Lobster](https://fonts.google.com/specimen/Lobster)
 - Resto de fuentes en [Roboto](https://fonts.google.com/specimen/Roboto)
+- Si se busca una ciudad ya cargada se debe volver a cargar por si hubo modificaciones (28-Octubre)
  
 
 ### Requisitos opcionales
@@ -19,6 +20,8 @@
 - Que la imagen de fondo corresponda con respecto al tiempo obtenido. Si hace sol, mostrar una imagen soleada, si llueve que la imagen de fondo sea de un día lluvioso.
 - Que se puedan mostrar varias ciudades a la vez (que en vez de tener una única localización guardada tengamos un array de localizaciones y al buscar se añade al array).
   - En este caso se debería permitir eliminar una localización
+  - Para buscar múltiples ciudades se escriben todas juntas en la barra de búsqueda (28-Octubre)
+  -
 
  
 
