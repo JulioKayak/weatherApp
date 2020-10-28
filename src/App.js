@@ -144,30 +144,43 @@ class App extends React.Component {
       .then((data) => {
         // eslint-disable-next-line
         if (data.cod === 200) {
-          if (
-            this.state.cities.find((ciudad) => {
-              return ciudad.weatherCityName === data.name;
-            }) == null
-          ) {
-            const newCity = {
-              weatherCityName: data.name,
-              weatherId: data.weather[0].id,
-              weatherDescription:
-                data.weather[0].description.slice(0, 1).toUpperCase() +
-                data.weather[0].description.slice(
-                  1,
-                  data.weather[0].description.length
-                ),
-              weatherTemp: data.main.temp,
-              weatherFeelsLike: data.main.feels_like,
-              weatherWindSpeed: data.wind.speed,
-              weatherIconId: data.weather[0].icon,
-              background: this.setBackground(data.weather[0].icon),
-            };
-            if (this.state.cities[0].weatherCityName === "") {
-              this.setState((state) => ({
-                cities: [newCity],
-              }));
+          const newCity = {
+            weatherCityName: data.name,
+            weatherId: data.weather[0].id,
+            weatherDescription:
+              data.weather[0].description.slice(0, 1).toUpperCase() +
+              data.weather[0].description.slice(
+                1,
+                data.weather[0].description.length
+              ),
+            weatherTemp: data.main.temp,
+            weatherFeelsLike: data.main.feels_like,
+            weatherWindSpeed: data.wind.speed,
+            weatherIconId: data.weather[0].icon,
+            background: this.setBackground(data.weather[0].icon),
+          };
+          if (this.state.cities[0].weatherCityName === "") {
+            this.setState((state) => ({
+              cities: [newCity],
+            }));
+          } else {
+            if (
+              this.state.cities.find((ciudad) => {
+                return ciudad.weatherCityName === data.name;
+              }) != null
+            ) {
+              const newCities = this.state.cities.filter(
+                (ciudad) => ciudad.weatherCityName !== data.name
+              );
+              if (newCities.length == 0) {
+                this.setState((state) => ({
+                  cities: [newCity],
+                }));
+              } else {
+                this.setState((state) => ({
+                  cities: [...newCities, newCity],
+                }));
+              }
             } else {
               this.setState((state) => ({
                 cities: [...state.cities, newCity],
@@ -185,8 +198,10 @@ class App extends React.Component {
               const previousls = JSON.parse(
                 window.localStorage.getItem("cities")
               );
-              previousls.push(data.name);
-              window.localStorage.setItem("cities", JSON.stringify(previousls));
+              const newls = previousls.filter(
+                (ciudad) => ciudad !== data.name)
+              newls.push(data.name);
+              window.localStorage.setItem("cities", JSON.stringify(newls));
             }
           }
         }
@@ -212,9 +227,10 @@ class App extends React.Component {
         cities: [defaultCity],
       }));
     } else {
-    this.setState((state) => ({
-      cities: newCities,
-    }));}
+      this.setState((state) => ({
+        cities: newCities,
+      }));
+    }
     const newCitiesNames = JSON.parse(
       window.localStorage.getItem("cities")
     ).filter((cityNamels) => cityNamels !== cityName);
