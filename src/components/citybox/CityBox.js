@@ -23,20 +23,35 @@ class CityBox extends React.Component {
   }
 
   render() {
+    var colorsHeader = ["#726a95", "#709fb0", "#a0c1b8", "#f4ebc1", "#c7b0ab"];
+    var colorsBody = ["#5a5995", "#619bb0", "#61c1a7", "#f4e186", "#ab918c"];
+    var rand = Math.floor(Math.random() * colorsHeader.length);
+    var random_color_header = colorsHeader[rand];
+    var random_color_body = colorsBody[rand];
     return (
       <Card
         md="auto"
         className="cityBox"
-        style={{ backgroundColor: "#AB918C" }}
+        style={{ backgroundColor: random_color_body }}
       >
-        <Card.Header className="cHeader">
+        <Card.Header
+          className="cHeader"
+          style={{
+            backgroundColor: random_color_header,
+          }}
+        >
           {this.props.weatherCityName}
           <img
             className="weatherIcon"
             alt="Weather icon matching current weather"
             src={this.iconLoad()}
           />
-          <button type="button" className="close" aria-label="Close" onClick={this.buttonClick}>
+          <button
+            type="button"
+            className="close"
+            aria-label="Close"
+            onClick={this.buttonClick}
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </Card.Header>
