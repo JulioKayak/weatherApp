@@ -54,7 +54,6 @@ class App extends React.Component {
         },
       ],
     };
-
     this.fetchData = this.fetchData.bind(this);
     this.setBackground = this.setBackground.bind(this);
     this.resetState = this.resetState.bind(this);
@@ -131,6 +130,7 @@ class App extends React.Component {
   };
 
   fetchData = (city) => {
+    const apiKey = "";
     var userLang = (navigator.language || navigator.userLanguage).slice(0, 2);
     var petition = "http://api.openweathermap.org/data/2.5/weather?";
     if (isNumeric(city)) {
@@ -141,7 +141,7 @@ class App extends React.Component {
     petition +=
       "&lang=" +
       userLang +
-      "&appid=fa434a1029aeb18262dcd765c962a7c2&units=metric";
+      "&appid="+apiKey+"&units=metric";
     fetch(petition)
       .then((response) => response.json())
       .then((data) => {
